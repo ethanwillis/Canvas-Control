@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 1 — Stars and Colors</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="main" class="main">
+        <canvas class="canvas_control" id="playField" width="600" height="600">
+            Please enable Javascript to see the content
+        </canvas>
+        <canvas class="canvas_result" id="playStatus" width="600" height="50">
+            Please enable Javascript to see the content
+        </canvas>
+    </div>
+</body>
+<script>
+    const FIGURE_COORDINATES = [
+        [90,0],
+        [30,188],
+        [180,68],
+        [0,68],
+        [150,188]
+    ];
+
+    const FIGURES_STYLE = [
+        'red', 'blue', 'green', 'yellow', 'black'
+    ];
+
+
+    const canvas = document.getElementById('playField');
+
+    if (canvas.getContext) {
+        const ctx = canvas.getContext("2d");
+        
+        const firstRow = 10;
+        const secondRow = 200;
+
+        const minMaxCoordinates = FIGURE_COORDINATES.reduce((acc, el) => {
+            if (el[0] < acc[0]) acc[0] = el[0];
+            if (el[1] > acc[1]) acc[1] = el[1];
+            return acc;
+        }, [Infinity,0]);
+
+        console.log(minMaxCoordinates);
+
+        
+
+        drawPolygon(ctx, 'green', 10, 10);
+        drawPolygon(ctx, 'green', 200, 10);
+        drawPolygon(ctx, 'green', 400, 10);
+        drawPolygon(ctx, 'green', 100, 220);
+        drawPolygon(ctx, 'green', 300, 220);
+    }
+    
+    function drawPolygon(ctx, style, startX = 0, startY = 0) {
+        const coordinates = FIGURE_COORDINATES
+        ctx.fillStyle = style;
+        ctx.beginPath();
+        coordinates.forEach(el => {
+            ctx.lineTo(
+                el[0]+startX,
+                el[1]+startY,
+            );
+        })
+        ctx.closePath();
+        ctx.fill();
+    }
+</script>
+</html>
