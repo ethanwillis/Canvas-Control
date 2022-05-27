@@ -9,7 +9,7 @@
 </head>
 <body>
     <div id="main" class="main">
-        <canvas class="canvas_control" id="playField" width="600" height="600">
+        <canvas class="canvas_control" id="playField">
             Please enable Javascript to see the content
         </canvas>
         <canvas class="canvas_result" id="playStatus" width="600" height="50">
@@ -18,49 +18,61 @@
     </div>
 </body>
 <script>
-    const FIGURE_COORDINATES = [
-        [90,0],
-        [30,188],
-        [180,68],
-        [0,68],
-        [150,188]
-    ];
+    // SETTINGS
+    const PLAYFIELD_SIZE = {width: 600, height: 600};
 
-    const FIGURES_STYLE = [
-        'red', 'blue', 'green', 'yellow', 'black'
-    ];
+    const FIGURES_SETTINGS = {
+        quantity: 5,
+        colors: [
+            'red', 'blue', 'green', 'yellow', 'black'
+        ],
+        coordinates: [
+            {x: 90, y: 0},
+            {x: 30, y: 188},
+            {x: 180, y: 68},
+            {x: 0, y: 68},
+            {x: 150, y: 18},
+        ]
+    };
 
-
+    // INITIALIZATION
     const canvas = document.getElementById('playField');
+    canvas.setAttribute('width', PLAYFIELD_SIZE.width)
+    canvas.setAttribute('height', PLAYFIELD_SIZE.height)
 
     if (canvas.getContext) {
         const ctx = canvas.getContext("2d");
-        
-        const firstRow = 10;
-        const secondRow = 200;
-
-        const minMaxCoordinates = FIGURE_COORDINATES.reduce((acc, el) => {
-            if (el[0] < acc[0]) acc[0] = el[0];
-            if (el[1] > acc[1]) acc[1] = el[1];
-            return acc;
-        }, [Infinity,0]);
-
-        console.log(minMaxCoordinates);
 
         
 
-        drawPolygon(ctx, 'green', 10, 10);
-        drawPolygon(ctx, 'green', 200, 10);
-        drawPolygon(ctx, 'green', 400, 10);
-        drawPolygon(ctx, 'green', 100, 220);
-        drawPolygon(ctx, 'green', 300, 220);
+        // drawPolygon(ctx, 'green', 10, 10);
+        // drawPolygon(ctx, 'green', 200, 10);
+        // drawPolygon(ctx, 'green', 400, 10);
+        // drawPolygon(ctx, 'green', 100, 220);
+        // drawPolygon(ctx, 'green', 300, 220);
+
+        // ctx.getImageData(105,105,1,1)
     }
     
+    function calculateFigureSize(coordinates) {;
+        const minMax = coordinates.reduce((acc, el) => {
+            if (el.x < acc.x.min) acc.x.min = el.x;
+            if (el.x > acc.x.max) acc.x.max = el.x;
+            if (el.y < acc.y.min) acc.y.min = el.y;
+            if (el.y > acc.y.max) acc.y.max = el.y;
+            return acc;
+        }, {x: {min: Infinity, max: 0}, y: {min: Infinity, max: 0}});
+        const size = {
+            x: minMax.x.max - minMax.x.min,
+            y: minMax.y.max - minMax.y.min,
+        }
+        return size;
+    }
+
     function drawPolygon(ctx, style, startX = 0, startY = 0) {
-        const coordinates = FIGURE_COORDINATES
         ctx.fillStyle = style;
         ctx.beginPath();
-        coordinates.forEach(el => {
+        FIGURE_COORDINATES.forEach(el => {
             ctx.lineTo(
                 el[0]+startX,
                 el[1]+startY,
@@ -68,6 +80,20 @@
         })
         ctx.closePath();
         ctx.fill();
+    }
+
+    function fillCanvas(canvas, figures) {
+        // Calculations to set position of items
+        const figureSize = calculateFigureSize(figures.coordinates);
+        const maxItemsInRow = Math.floor(canvas.width / figureSize.x);
+        const itemsInCol = Math.ceil(figures.quantity / itemsInRow);
+
+        if (itemsInCol * figureSize.y > PLAYFIELD_SIZE.height) {
+            alert('Too many figures. Unable to launch, check settings');
+            return false;
+        } 
+        
+        // TODO: reducer to draw figures
     }
 </script>
 </html>
