@@ -41,7 +41,7 @@
     canvas.setAttribute('height', PLAYFIELD_SIZE.height)
 
     if (canvas.getContext) {
-        // fillCanvas(canvas, FIGURES_SETTINGS)
+        fillCanvas(canvas, FIGURES_SETTINGS)
 
         // ctx.getImageData(105,105,1,1)
     }
@@ -81,7 +81,7 @@
         const itemsInRow = Math.floor(canvas.width / figureSize.x);
         const itemsInCol = Math.ceil(figures.quantity / itemsInRow);
         const colsWidth = canvas.width / itemsInRow;
-        const lastRowWidth = canvas.width / (FIGURES_SETTINGS.quantity % itemsInRow);
+        const colsWidthOnLastRow = canvas.width / (FIGURES_SETTINGS.quantity % itemsInRow);
         const rowsHeight = canvas.height / itemsInCol;
 
         if (itemsInCol * figureSize.y > PLAYFIELD_SIZE.height) {
@@ -91,17 +91,16 @@
         
         for (let i=0; i<FIGURES_SETTINGS.quantity; i++) {
             const curRow = Math.floor(i / itemsInRow);
-            const curCol = Math.floor(i / itemsInCol);
+            const curCol = Math.floor(i % itemsInRow);
 
             const isLastRow = curRow+1 === itemsInCol;
+            const cellWidth = isLastRow ? colsWidthOnLastRow : colsWidth;
 
-            const horShift = isLastRow ?
-                (lastRowWidth - figureSize.x) / 2 :
-                (colsWidth - figureSize.x) / 2;
+            const horShift = (cellWidth - figureSize.x) / 2;
             const vertShift = (rowsHeight - figureSize.y) / 2;
 
             const style = FIGURES_SETTINGS.colors[i%FIGURES_SETTINGS.quantity];
-            const startX = curCol * colsWidth + horShift;
+            const startX = curCol * cellWidth + horShift;
             const startY = curRow * rowsHeight + vertShift;
 
             const ctx = canvas.getContext("2d");
@@ -115,7 +114,7 @@
             
         }
 
-        // console.log(figureSize, itemsInRow, itemsInCol, colsWidth, rowsHeight, lastRowWidth)
+        // console.log(figureSize, itemsInRow, itemsInCol, colsWidth, rowsHeight, colsWidthOnLastRow)
     }
 </script>
 </html>
