@@ -9,8 +9,9 @@ By clicking on a colored star, paint over a small canvas with the star's color. 
 Do not use libraries or frameworks
 
 ### Result:
-Source code as HTML, CSS and JS files
+Source code as HTML, CSS and JS files OR [GitHub Pages](https://apalevich.github.io/Canvas-Control/)
 
+***
 
 ## Тестовое задание для позиции Front-end Developer JavaScript
  
@@ -19,6 +20,6 @@ Source code as HTML, CSS and JS files
 ### Требования
 Не использовать библиотеки и фреймворки.
 
-### Пакет
-Исходники на JavaScript/CSS/HTML.
+### Результат 
+Исходники на JavaScript/CSS/HTML или [GitHub Pages](https://apalevich.github.io/Canvas-Control/)
 
