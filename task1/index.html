@@ -36,14 +36,22 @@
     };
 
     // INITIALIZATION
-    const canvas = document.getElementById('playField');
-    canvas.setAttribute('width', PLAYFIELD_SIZE.width)
-    canvas.setAttribute('height', PLAYFIELD_SIZE.height)
+    const controlCanvas = document.getElementById('playField');
+    controlCanvas.setAttribute('width', PLAYFIELD_SIZE.width);
+    controlCanvas.setAttribute('height', PLAYFIELD_SIZE.height);
+    const resultCanvas = document.getElementById('playStatus');
 
-    if (canvas.getContext) {
-        fillCanvas(canvas, FIGURES_SETTINGS)
+    if (controlCanvas.getContext && resultCanvas.getContext) {
+        const controlCtx = controlCanvas.getContext("2d");
+        const resultCtx = resultCanvas.getContext("2d");
 
-        // ctx.getImageData(105,105,1,1)
+        fillCanvas(controlCanvas, controlCtx, FIGURES_SETTINGS)
+
+        controlCanvas.addEventListener('click', e => {
+            const { data } = controlCtx.getImageData(e.layerX, e.layerY, 1, 1);
+            const rgba = `rgba(${data.join()})`
+            displayResult(resultCanvas, resultCtx, rgba);
+        })
     }
     
     function calculateFigureSize(coordinates) {;
@@ -74,9 +82,7 @@
         ctx.fill();
     }
 
-    function fillCanvas(canvas, figures) {
-        // Calculations to set position of items
-        const ctx = canvas.getContext("2d");
+    function fillCanvas(canvas, ctx, figures) {
         const figureSize = calculateFigureSize(figures.coordinates);
         const itemsInRow = Math.floor(canvas.width / figureSize.x);
         const itemsInCol = Math.ceil(figures.quantity / itemsInRow);
@@ -86,7 +92,7 @@
 
         if (itemsInCol * figureSize.y > PLAYFIELD_SIZE.height) {
             alert('Too many figures. Unable to launch, check settings');
-            return false;
+            return;
         } 
         
         for (let i=0; i<FIGURES_SETTINGS.quantity; i++) {
@@ -103,18 +109,13 @@
             const startX = curCol * cellWidth + horShift;
             const startY = curRow * rowsHeight + vertShift;
 
-            const ctx = canvas.getContext("2d");
-            console.log({
-                style,
-                startX,
-                startY
-            })
-            
-            drawPolygon(ctx, style, startX, startY);
-            
+            drawPolygon(ctx, style, startX, startY);   
         }
+    }
 
-        // console.log(figureSize, itemsInRow, itemsInCol, colsWidth, rowsHeight, colsWidthOnLastRow)
+    function displayResult(canvas, ctx, color) {
+        ctx.fillStyle = color;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 </script>
 </html>
