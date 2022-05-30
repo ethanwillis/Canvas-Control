@@ -85,15 +85,37 @@
     function fillCanvas(canvas, figures) {
         // Calculations to set position of items
         const figureSize = calculateFigureSize(figures.coordinates);
-        const maxItemsInRow = Math.floor(canvas.width / figureSize.x);
+        const itemsInRow = Math.floor(canvas.width / figureSize.x);
         const itemsInCol = Math.ceil(figures.quantity / itemsInRow);
+        const colsWidth = canvas.width / itemsInRow;
+        const lastRowWidth = canvas.width / (FIGURES_SETTINGS.quantity % itemsInRow);
+        const rowsHeight = canvas.height / itemsInCol;
 
         if (itemsInCol * figureSize.y > PLAYFIELD_SIZE.height) {
             alert('Too many figures. Unable to launch, check settings');
             return false;
         } 
         
-        // TODO: reducer to draw figures
+        for (let i=0; i<canvas.quantity; i++) {
+            const curRow = Math.floor(i / itemsInRow);
+            const curCol = Math.floor(i / itemsInCol);
+
+            const isLastRow = curRow+1 === itemsInCol;
+
+            const horShift = horShift ?
+                (lastRowWidth - figureSize.x) / 2 :
+                (colsWidth - figureSize.x) / 2;
+            const vertShift = (rowsHeight - figureSize.y) / 2;
+
+            const style = FIGURES_SETTINGS.colors[i%canvas.quantity];
+            const startX = curCol * colsWidth + horShift;
+            const startY;
+
+            // const args = `style: ${}, startX = `
+            console.log()
+        }
+
+        // console.log(figureSize, itemsInRow, itemsInCol, colsWidth, rowsHeight, lastRowWidth)
     }
 </script>
 </html>
