@@ -31,7 +31,7 @@
             {x: 30, y: 188},
             {x: 180, y: 68},
             {x: 0, y: 68},
-            {x: 150, y: 18},
+            {x: 150, y: 188},
         ]
     };
 
@@ -41,15 +41,7 @@
     canvas.setAttribute('height', PLAYFIELD_SIZE.height)
 
     if (canvas.getContext) {
-        const ctx = canvas.getContext("2d");
-
-        
-
-        // drawPolygon(ctx, 'green', 10, 10);
-        // drawPolygon(ctx, 'green', 200, 10);
-        // drawPolygon(ctx, 'green', 400, 10);
-        // drawPolygon(ctx, 'green', 100, 220);
-        // drawPolygon(ctx, 'green', 300, 220);
+        // fillCanvas(canvas, FIGURES_SETTINGS)
 
         // ctx.getImageData(105,105,1,1)
     }
@@ -72,10 +64,10 @@
     function drawPolygon(ctx, style, startX = 0, startY = 0) {
         ctx.fillStyle = style;
         ctx.beginPath();
-        FIGURE_COORDINATES.forEach(el => {
+        FIGURES_SETTINGS.coordinates.forEach(el => {
             ctx.lineTo(
-                el[0]+startX,
-                el[1]+startY,
+                el.x + startX,
+                el.y + startY,
             );
         })
         ctx.closePath();
@@ -84,6 +76,7 @@
 
     function fillCanvas(canvas, figures) {
         // Calculations to set position of items
+        const ctx = canvas.getContext("2d");
         const figureSize = calculateFigureSize(figures.coordinates);
         const itemsInRow = Math.floor(canvas.width / figureSize.x);
         const itemsInCol = Math.ceil(figures.quantity / itemsInRow);
@@ -96,23 +89,30 @@
             return false;
         } 
         
-        for (let i=0; i<canvas.quantity; i++) {
+        for (let i=0; i<FIGURES_SETTINGS.quantity; i++) {
             const curRow = Math.floor(i / itemsInRow);
             const curCol = Math.floor(i / itemsInCol);
 
             const isLastRow = curRow+1 === itemsInCol;
 
-            const horShift = horShift ?
+            const horShift = isLastRow ?
                 (lastRowWidth - figureSize.x) / 2 :
                 (colsWidth - figureSize.x) / 2;
             const vertShift = (rowsHeight - figureSize.y) / 2;
 
-            const style = FIGURES_SETTINGS.colors[i%canvas.quantity];
+            const style = FIGURES_SETTINGS.colors[i%FIGURES_SETTINGS.quantity];
             const startX = curCol * colsWidth + horShift;
-            const startY;
+            const startY = curRow * rowsHeight + vertShift;
 
-            // const args = `style: ${}, startX = `
-            console.log()
+            const ctx = canvas.getContext("2d");
+            console.log({
+                style,
+                startX,
+                startY
+            })
+            
+            drawPolygon(ctx, style, startX, startY);
+            
         }
 
         // console.log(figureSize, itemsInRow, itemsInCol, colsWidth, rowsHeight, lastRowWidth)
