@@ -48,7 +48,7 @@
         fillCanvas(controlCanvas, controlCtx, FIGURES_SETTINGS)
 
         controlCanvas.addEventListener('click', e => {
-            const { data } = controlCtx.getImageData(e.layerX, e.layerY, 1, 1);
+            const { data } = controlCtx.getImageData(e.offsetX, e.offsetY, 1, 1);
             const rgba = `rgba(${data.join()})`
             displayResult(resultCanvas, resultCtx, rgba);
         })

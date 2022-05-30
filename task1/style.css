@@ -1,23 +1,15 @@
-#main {
-    position: relative;
-    margin: 0 auto;
-    width: 600px;
-    font-size: 32px;
-    font-family: Arial, Helvetica, sans-serif;
+.main {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
 }
 
 .canvas_control {
-    position: absolute;
-    left: 0;
-    top: 0;
-    z-index: 10;
     border: 1px solid grey;
 }
 
 .canvas_result {
-    position: absolute;
-    left: 0;
-    top: 650px;
-    z-index: 10;
     border: 1px solid grey;
 }
