@@ -2,8 +2,8 @@
 
 ## Test task for the Front-end Developer JavaScript position
 Create 2 canvases with a size of 600x600 and 600x50.
-Draw 5 stars in the bigger canvas: filled with red, blue, green, yellow and black colors.
-By clicking on a colored star, paint over a small canvas with the star's color. By clicking on a white (not painted over) area, small canvas have to be painted over with white.
+Draw 5 5-point stars in the bigger canvas: fill the stars with red, blue, green, yellow and black colors.
+When clicking on a colored star you should be able to paint on the small canvas with the clicked star's color. By clicking on a white (not painted over) area in the larger canvas then you should be able to paint on the small canvas with white.
 
 ### Requirements:
 Do not use libraries or frameworks
